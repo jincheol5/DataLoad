@@ -1,2 +1,2 @@
-# DataLoading
-Data loading code into DB
+# DataLoad
+Data load to DB
