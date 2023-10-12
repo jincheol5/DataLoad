@@ -1,7 +1,12 @@
 package sejong.dfpl.dataLoad;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.bson.Document;
@@ -10,6 +15,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Filters;
 
 public class InsertTool {
 	
@@ -24,6 +30,92 @@ public class InsertTool {
 		this.mongoDB = MongoClients.create(url).getDatabase(dbName);
 		
 	}
+	
+	
+	public void insertTemporalGraph(String filePath) throws IOException {
+		
+		
+		HashSet<String> nodeSet=new HashSet<>();
+		HashSet<Long> timeSet=new HashSet<>();
+		
+		
+		//create edge event collection
+		try {
+		    this.mongoDB.createCollection("EdgeEvent");
+		} catch (Exception exception) {
+		    System.err.println("EdgeEvent collection already Exists");
+		}
+		
+		//create temporal graph information collection
+		try {
+		    this.mongoDB.createCollection("Information");
+		} catch (Exception exception) {
+		    System.err.println("Information collection already Exists");
+		}
+		
+		
+		MongoCollection<Document> edgeEventCollection=this.mongoDB.getCollection("EdgeEvent");
+		MongoCollection<Document> infoCollection=this.mongoDB.getCollection("Information");
+		
+		
+		//data load by reading file
+		@SuppressWarnings("resource")
+		BufferedReader br=new BufferedReader(new FileReader(filePath));
+
+		
+		Iterator<String> iter=br.lines().iterator();
+		
+		
+		
+		while(iter.hasNext()) {
+			
+			String[] lineElements=iter.next().split(" ");
+			
+			String sourceID=lineElements[0];
+			String targetID=lineElements[1];
+			Long time=Long.valueOf(lineElements[2]);
+			
+			
+			
+			String edgeEventID=sourceID+"|"+targetID+"|"+time;
+			
+			
+	
+			//중복 제거 
+			if(edgeEventCollection.find(Filters.eq("_id", edgeEventID)).first()!=null)
+				continue;
+			
+			nodeSet.add(sourceID);
+			nodeSet.add(targetID);
+			timeSet.add(time);
+			
+			Document doc=new Document()
+			.append("_id",edgeEventID)
+			.append("sourceID",sourceID)
+			.append("targetID", targetID)
+			.append("time", time);
+			
+			edgeEventCollection.insertOne(doc);
+			
+			
+		}
+		
+		
+		ArrayList<String> nodeList=new ArrayList<>(nodeSet);
+		ArrayList<Long> timeList=new ArrayList<>(timeSet);
+		Collections.sort(timeList);
+		
+		
+		Document graphInfo=new Document()
+		.append("_id", "graphInfo")
+		.append("nodeList", nodeList)
+		.append("timeList", timeList);
+		
+		infoCollection.insertOne(graphInfo);
+		
+	}
+	
+	
 	
 	/**
 	 * compute tSSP temporal path 
