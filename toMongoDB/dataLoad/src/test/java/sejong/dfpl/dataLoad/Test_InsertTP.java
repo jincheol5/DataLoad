@@ -6,9 +6,9 @@ public class Test_InsertTP {
 		// TODO Auto-generated method stub
 
 		
-		InsertTool tool=new InsertTool("TPGL-SimpleGraph");
+		InsertTool tool=new InsertTool("CollegeMsg");
 		
-		tool.insertTP("d", Long.valueOf(0));
+		tool.insertTP("3", Long.valueOf(0));
 		
 	}
 

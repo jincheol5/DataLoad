@@ -10,7 +10,7 @@ public class Test_InsertTemporalGraph {
 		
 		InsertTool tool=new InsertTool("CollegeMsg");
 		
-		tool.insertTemporalGraph("C:\\data\\CollegeMsg\\CollegeMsg.txt");
+		tool.insertTemporalGraph("C:\\data\\graphData\\CollegeMsg.txt");
 	}
 
 }
