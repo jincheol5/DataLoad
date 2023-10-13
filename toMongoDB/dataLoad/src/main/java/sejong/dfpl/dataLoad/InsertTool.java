@@ -209,7 +209,7 @@ public class InsertTool {
 		this.mongoDB = MongoClients.create(url).getDatabase(this.dbName+"TP");
 		
 		//create temporal path collection
-		String tpCollectionName="TemporalPath|"+sourceID+"|"+startTime;
+		String tpCollectionName="TP|"+sourceID+"|"+startTime;
 		try {
 		    this.mongoDB.createCollection(tpCollectionName);
 		} catch (Exception exception) {

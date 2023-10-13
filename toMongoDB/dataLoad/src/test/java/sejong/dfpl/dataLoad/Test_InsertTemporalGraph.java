@@ -8,9 +8,15 @@ public class Test_InsertTemporalGraph {
 		// TODO Auto-generated method stub
 
 		
-		InsertTool tool=new InsertTool("CollegeMsg");
+		//InsertTool tool=new InsertTool("CollegeMsg");
 		
-		tool.insertTemporalGraph("C:\\data\\graphData\\CollegeMsg.txt");
+		//tool.insertTemporalGraph("C:\\data\\graphData\\CollegeMsg.txt");
+		
+		//tool.insertTemporalGraph("C:\\data\\CollegeMsg\\CollegeMsg.txt")
+
+		InsertTool tool=new InsertTool("CollegeMsg-1000");
+		
+		tool.insertTemporalGraph("C:\\data\\CollegeMsg\\CollegeMsg-1000.txt");
 	}
 
 }

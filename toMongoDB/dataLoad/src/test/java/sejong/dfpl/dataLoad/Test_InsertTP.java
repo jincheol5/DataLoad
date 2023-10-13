@@ -6,9 +6,11 @@ public class Test_InsertTP {
 		// TODO Auto-generated method stub
 
 		
-		InsertTool tool=new InsertTool("CollegeMsg");
+		//InsertTool tool=new InsertTool("CollegeMsg");
 		
-		tool.insertTP("3", Long.valueOf(0));
+		InsertTool tool=new InsertTool("CollegeMsg-1000");
+		
+		tool.insertTP("9", Long.valueOf(0));
 		
 	}
 
